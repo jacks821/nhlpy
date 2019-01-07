@@ -23,7 +23,7 @@ def findPlayer(playerName):
 #Gets player stats for given season, with the options available.
 #Assumes that the year given is the latter calendar year in the season.
 #Not meant to be publicly consumed as it assumes that only one of the options will be checked.
-def getPlayerSeasonStatswOpts(playerName, season, splits=False, wl=False, monthly=False, daily=False, division=False, conf=False, team=False, game=False, rank=False):
+def getPlayerSeasonStatswOpts(playerName, season, splits=False, wl=False, monthly=False, daily=False, division=False, conf=False, team=False, game=False, rank=False, situation=False):
     player = findPlayer(playerName)
     s1 = season - 1
     if wl == True:
@@ -52,6 +52,9 @@ def getPlayerSeasonStatswOpts(playerName, season, splits=False, wl=False, monthl
         return request(req)['stats'][0]['splits']
     if rank == True:
         req = req = player['link'] + "/stats" + "?stats=regularSeasonStatRankings&season=" + str(s1) + str(season)
+        return request(req)['stats'][0]['splits']
+    if situation == True:
+        req = req = player['link'] + "/stats" + "?stats=goalsByGameSituation&season=" + str(s1) + str(season)
         return request(req)['stats'][0]['splits']
     req = player['link'] + "/stats" + "?stats=statsSingleSeason&season=" + str(s1) + str(season)
     return request(req)['stats'][0]
@@ -83,6 +86,9 @@ def getPlayerDailySplit(playerName, season):
 
 def getPlayerWinLossSplit(playerName, season):
     return getPlayerSeasonStatswOpts(playerName, season, wl=True)
+
+def getPlayerGoalsBySituation(playerName, season):
+    return getPlayerSeasonStatswOpts(playerName, season, situation=True)
 
     
     
