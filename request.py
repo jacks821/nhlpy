@@ -6,6 +6,7 @@ import json
 def request(url):
     base = "https://statsapi.web.nhl.com/"
     reqUrl = base + url
+    print(reqUrl)
     r = requests.get(reqUrl)
     return json.loads(r.content)
 
@@ -108,6 +109,44 @@ def findTeam(team):
         if t['name'] == team:
             return t
     return "Team not Found"
+
+#Gets standings for given season, with the options available.
+#Assumes that the year given is the latter calendar year in the season.
+#Not meant to be publicly consumed as it assumes that only one of the options will be checked.
+
+def _getStandings(day=None, year=None, month=None, types=False):
+    baseUrl = "api/v1/standings"
+    if day != None:
+        url = baseUrl + "?date=" + str(year) + "-" + "{0:0=2d}".format(month) + "-" + "{0:0=2d}".format(day)
+        print(url)
+        return request(url)
+    elif year != None:
+        s1 = year - 1
+        url = baseUrl + "?season=" + str(s1) + str(year)
+        return request(url)['records'][0]['teamRecords']
+    elif day != None:
+        url = baseUrl + "?date=" + str(year) + "-" + "{0:0=2d}".format(month) + "-" + "{0:0=2d}".format(day)
+        print(url)
+        return request(url)
+    return request(baseUrl)['records'][0]['teamRecords']
+    
+
+def getDayStandings(day, year, month):
+    return _getStandings(day=day, month=month, year=year)
+
+def getYearStandings(year):
+    return _getStandings(year=year)
+
+def getCurrentStandings():
+    return _getStandings()
+
+def getTeamStats(team):
+    t = findTeam(team)
+    i = str(t['id'])
+    url = "api/v1/teams/" + i + "/stats"
+    return request(url)['stats']
+
+    
 
 
 

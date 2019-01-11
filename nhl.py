@@ -2,10 +2,7 @@ import requests
 import json
 from team import Team
 from player import Player
-from request import getPlayerSeasonStats, getPlayerMonthlySplit, getPlayerWinLossSplit, getPlayerDailySplit, getPlayerVsConference, getPlayerVsDivision, getPlayerVsTeam, getPlayerStatRanks, findTeam, getSchedule
+from request import getTeamStats, _getStandings, getPlayerSeasonStats, getPlayerMonthlySplit, getPlayerWinLossSplit, getPlayerDailySplit, getPlayerVsConference, getPlayerVsDivision, getPlayerVsTeam, getPlayerStatRanks, findTeam, getSchedule
 
-r = getSchedule(team="Nashville Predators")
+r = getTeamStats("Vegas Golden Knights")
 print(r)
-
-
-
