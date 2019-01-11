@@ -90,6 +90,29 @@ def getPlayerWinLossSplit(playerName, season):
 def getPlayerGoalsBySituation(playerName, season):
     return getPlayerSeasonStatswOpts(playerName, season, situation=True)
 
+def getSchedule(startMonth=None, startDay=None, startYear=None, endMonth=None, endDay=None, endYear=None, team=None):
+    url = "api/v1/schedule"
+    if team != None:
+        t = findTeam(team)
+        addedUrl = "?teamId=" + str(t['id'])
+        r = request(url + addedUrl)
+        return r['dates'][0]
+    r = request(url)
+    return r['dates'][0]
+    
+
+def findTeam(team):
+    url = "api/v1/teams"
+    r = request(url)
+    for t in r['teams']:
+        if t['name'] == team:
+            return t
+    return "Team not Found"
+
+
+
+
+
     
     
     
